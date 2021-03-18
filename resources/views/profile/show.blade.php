@@ -1,10 +1,10 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
-
+@extends('layouts.app')
+@section('header')
+    <h2 class="h4 font-weight-bold">
+        Profile
+    </h2>
+@endsection
+@section('content')
     <div>
         @if (Laravel\Fortify\Features::canUpdateProfileInformation())
             @livewire('profile.update-profile-information-form')
@@ -26,10 +26,9 @@
 
         @livewire('profile.logout-other-browser-sessions-form')
 
-        @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
-            <x-jet-section-border />
-
-            @livewire('profile.delete-user-form')
-        @endif
+{{--        @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())--}}
+{{--            <x-jet-section-border />--}}
+{{--            @livewire('profile.delete-user-form')--}}
+{{--        @endif--}}
     </div>
-</x-app-layout>
+@endsection
