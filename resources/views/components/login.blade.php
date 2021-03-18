@@ -5,13 +5,13 @@
 
             <div class="form-group">
                 <input type="email" class="form-control {{($errors->register->first('email') ? "form-error" : "")}}" name="email" placeholder="Email" value="{{ old('email') }}"/>
-                {!! $errors->register->first('email', '<p class="text-danger">:message</p>') !!}
+                {!! $errors->first('email', '<p class="text-danger">:message</p>') !!}
 
             </div>
 
             <div class="form-group">
                 <input type="password" class="form-control  {{($errors->register->first('password') ? "form-error" : "")}}" name="password" placeholder="Password" value=""/>
-                {!! $errors->register->first('password', '<p class="text-danger">:message</p>') !!}
+                {!! $errors->first('password', '<p class="text-danger">:message</p>') !!}
             </div>
 
             <input type="submit" class="btnRegister" value="Login"/>

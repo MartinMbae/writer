@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('header')
-    <h2 class="h4 font-weight-bold">
-        Profile
-    </h2>
+{{--    <h2 class="h4 font-weight-bold">--}}
+{{--        Profile--}}
+{{--    </h2>--}}
 @endsection
 @section('content')
     <div>
