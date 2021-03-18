@@ -112,3 +112,7 @@
 .bg-custom {
     background-image: linear-gradient(90deg, #3931af 0%, #00c6ff 100%);
 }
+
+.form-error {
+    border: 2px solid #e74c3c;
+}
