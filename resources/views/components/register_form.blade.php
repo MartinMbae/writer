@@ -4,7 +4,7 @@
     <div class="row register-form justify-content-center">
         <div class=" col-md-9">
             <div class="form-group">
-                <input type="text" class="form-control {{($errors->register->first('username') ? "form-error" : "")}}" name="username" placeholder="Username" value="{{ old('username') }}"  autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"/>
+                <input type="text" class="form-control {{($errors->register->first('username') ? "form-error" : "")}}" name="username" placeholder="Username" value="{{ old('username') }}"/>
                 {!! $errors->register->first('username', '<p class="text-danger">:message</p>') !!}
             </div>
             <div class="form-group">

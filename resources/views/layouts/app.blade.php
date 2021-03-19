@@ -7,12 +7,32 @@
     <title>Academic Writing</title>
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/js/dropzone/dropzone.min.css') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/imgs/logo.png')}}"/>
     @livewireStyles
     <script src="{{ mix('js/app.js') }}" defer></script>
+
+    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dropzone/dropzone.min.js') }}"></script>
+    <style>
+        .form-error {
+            border: 2px solid #e74c3c;
+        }
+        .entry:not(:first-of-type)
+        {
+            margin-top: 10px;
+        }
+
+        .glyphicon
+        {
+            font-size: 12px;
+        }
+
+
+    </style>
 </head>
 <body class="font-sans antialiased bg-light">
-@include('navigation-menu')
+@yield('navbar')
 <!-- Page Heading -->
 <header class="d-flex py-3 bg-white shadow-sm border-bottom">
     <div class="container">
@@ -27,5 +47,7 @@
 
 @livewireScripts
 @stack('scripts')
+
+
 </body>
 </html>

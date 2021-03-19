@@ -7,9 +7,9 @@
 
 @section('header')
     <h2 class="h4 font-weight">
-        {{ Auth::user()->username }}, you are logged in as an <b>Admin</b>
+       Add a new order
     </h2>
 @endsection
 @section('content')
-    @include('vendor.jetstream.components.admin')
+    @include('vendor.jetstream.components.new_order')
 @endsection
