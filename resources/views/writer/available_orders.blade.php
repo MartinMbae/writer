@@ -1,17 +1,18 @@
 @extends('layouts.app')
 
 @section('navbar')
-    @include('navigation-menu-admin')
+    @include('navigation-menu-writer')
 @endsection
 
 @section('header')
     <h2 class="h4 font-weight">
-        All Orders
+        Available orders
     </h2>
 @endsection
 @section('content')
 
     <table class="table table-bordered table-hover table-striped ">
+
         <thead class="bg-primary">
         <tr style="color: white">
             <th>#</th>
@@ -25,10 +26,9 @@
             <th>Action</th>
         </tr>
         </thead>
-
         @if(sizeof($orders) == 0)
             <tr>
-                <td colspan="9">You have not added any order</td>
+                <td colspan="9">No order available now. Try again later</td>
             </tr>
         @else
             @foreach($orders as $key => $order)
@@ -41,7 +41,7 @@
                     <td>{{ $order->subject }}</td>
                     <td>{{ $order->paper_level }}</td>
                     <td>{{ $order->writing_format }}</td>
-                    <td><a href="{{ url("orders/$order->id") }}">View</a> </td>
+                    <td><a href="{{ url("writer/order/$order->id") }}">View</a> </td>
                 </tr>
             @endforeach
         @endif
