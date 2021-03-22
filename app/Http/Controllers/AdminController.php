@@ -8,7 +8,12 @@ class AdminController extends Controller
 {
     public function home()
     {
-        return view('admin.admin');
+
+
+        $orderController = new OrderController();
+        $counts = $orderController->getCounts();
+        $title = "Admin Dashboard";
+        return view('admin.dashboard', compact('title', 'counts'));
     }
 
 

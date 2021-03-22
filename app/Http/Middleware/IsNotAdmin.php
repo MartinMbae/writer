@@ -17,7 +17,7 @@ class IsNotAdmin
     public function handle(Request $request, Closure $next)
     {
         if ($request->user()->status != 0) {
-            abort(401);
+           return redirect('admin');
         }
         return $next($request);
     }

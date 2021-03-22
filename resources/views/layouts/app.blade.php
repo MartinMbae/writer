@@ -6,14 +6,16 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Academic Writing</title>
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/js/dropzone/dropzone.min.css') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/imgs/logo.png')}}"/>
     @livewireStyles
-    <script src="{{ mix('js/app.js') }}" defer></script>
 
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/dropzone/dropzone.min.js') }}"></script>
+
+    <script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
     <style>
         .form-error {
             border: 2px solid #e74c3c;

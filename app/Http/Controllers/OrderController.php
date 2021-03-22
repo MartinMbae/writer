@@ -12,20 +12,96 @@ use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
-     */
-    public function index()
+
+    public function index($category = null)
     {
-        $orders = Order::all();
+        if ($category == null) {
+            $classification = 0;
+            $subtitle = "All Orders";
+            $orders = Order::all();
+        } else {
+            $classification = 1;
+            switch ($category) {
+                case 'available':
+                    $status = '0';
+                    $subtitle = "Available Orders";
+                    break;
+                case 'awarded':
+                    $status = '1';
+                    $subtitle = "Awarded Orders";
+                    break;
+                case 'revision':
+                    $status = '2';
+                    $subtitle = "Orders Under Revision";
+                    break;
+                case 'completed':
+                    $status = '3';
+                    $subtitle = "Completed Orders";
+                    break;
+                case 'rejected':
+                    $status = '4';
+                    $subtitle = "Rejected Orders";
+                    break;
+                case 'cancelled':
+                    $status = '5';
+                    $subtitle = "Cancelled Orders";
+                    break;
+                case 'paid':
+                    $status = '6';
+                    $subtitle = "Paid Orders";
+                    break;
+                default:
+                    $status = null;
+                    break;
+            }
+            if ($status == null) {
+                abort(404);
+            }
+            $orders = Order::where("status", $status)->get();
+        }
         foreach ($orders as $order) {
             $name = Source::where('id', $order->source_id)->first()->name;
             $order->source_name = $name;
+            $status = $order->status;
+            $badge = "";
+            switch ($status) {
+                case 0:
+                    $order_status = "New Order";
+                    $badge = "badge-light";
+                    break;
+                case 1:
+                    $order_status = "Awarded Orders";
+                    $badge = "badge-info";
+                    break;
+                case 2:
+                    $order_status = "Under Revision";
+                    $badge = "badge-dark";
+                    break;
+                case 3:
+                    $order_status = "Completed Orders";
+                    $badge = "badge-success";
+                    break;
+                case 4:
+                    $order_status = "Rejected Orders";
+                    $badge = "badge-danger";
+                    break;
+                case 5:
+                    $order_status = "Cancelled Orders";
+                    break;
+                case 6:
+                    $order_status = "Paid Orders";
+                    $badge = "badge-success";
+                    break;
+                default:
+                    $order_status = "Not Defined";
+                    break;
+            }
+            $order->status_name = $order_status;
+            $order->badge = $badge;
         }
-
-        return view('admin.orders', compact('orders'));
+        $title = "All Orders";
+        $counts = $this->getCounts();
+        return view('admin.orders', compact('orders', 'title', 'subtitle', 'classification', 'counts'));
     }
 
     /**
@@ -133,8 +209,11 @@ class OrderController extends Controller
 
         $random = Str::random(6);
 
-        return view('admin.new_order', compact('sources', 'paper_types', 'subjects',
-            'paper_levels', 'writing_formats', 'languages', 'spacings', 'random'));
+        $title = "Add a new Order";
+
+        $counts = $this->getCounts();
+        return view('admin.create_order', compact('sources', 'paper_types', 'subjects',
+            'paper_levels', 'writing_formats', 'languages', 'spacings', 'random', 'title','counts'));
     }
 
     /**
@@ -202,11 +281,13 @@ class OrderController extends Controller
     {
         $name = Source::where('id', $order->source_id)->first()->name;
         $order->source_name = $name;
-        $attachments= array_filter(Storage::disk('public')->files(),
-            function ($item)use ($order) {return Str::startsWith($item, $order->random_id);}
+        $attachments = array_filter(Storage::disk('public')->files(),
+            function ($item) use ($order) {
+                return Str::startsWith($item, $order->random_id);
+            }
         );
         $users = User::all();
-        return view('admin.view_order', compact('order','users', 'attachments'));
+        return view('admin.view_order', compact('order', 'users', 'attachments'));
     }
 
     /**
@@ -244,25 +325,37 @@ class OrderController extends Controller
     }
 
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
-     */
     public function add_files(Request $request, $random)
     {
         if ($request->hasFile('file')) {
             if ($request->file('file')->isValid()) {
                 $request->validate([
-                    'file' => 'mimes:jpeg,png,css,|max:1014',
+                    'file' => 'max:2048',
                 ]);
                 $extension = $request->file->extension();
-                $filename = $random.'_'.Str::random(5);
-                $request->file->storeAs('/public', $filename.".".$extension);
-                $url = Storage::url($filename.".".$extension);
+                $filename = $random . '_' . Str::random(5);
+                $request->file->storeAs('/public', $filename . "." . $extension);
+                $url = Storage::url($filename . "." . $extension);
                 echo $url;
             }
         }
     }
+
+
+    public function getCounts(): object
+    {
+        $counts = array(
+            'available' => Order::where('status', '0')->count(),
+            'awarded' => Order::where('status', '1')->count(),
+            'revision' => Order::where('status', '2')->count(),
+            'completed' => Order::where('status', '3')->count(),
+            'rejected' => Order::where('status', '4')->count(),
+            'cancelled' => Order::where('status', '5')->count(),
+            'paid' => Order::where('status', '6')->count(),
+        );
+        return (object)($counts);
+
+    }
+
+
 }

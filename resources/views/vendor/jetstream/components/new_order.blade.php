@@ -76,7 +76,6 @@
                     {!! $errors->first('slide_count', '<p class="text-danger">:message</p>') !!}
                 </div>
 
-
                 <div class="form-group">
                     <label for="source_count">Source Count</label>
                     <input type="number" id="source_count"

@@ -28,6 +28,7 @@ Route::middleware(['auth:sanctum', 'verified','is_not_admin'])->group(function (
 });
 Route::middleware(['auth:sanctum', 'verified','is_admin'])->group(function () {
     Route::get("admin", [AdminController::class, 'home'])->middleware('is_admin');
+    Route::get('admin/orders/{category}',  [OrderController::class, 'index']);
     Route::resource('sources', '\App\Http\Controllers\SourceController');
     Route::resource('orders', '\App\Http\Controllers\OrderController');
     Route::post('order_files/{random}',  [OrderController::class, 'add_files']);

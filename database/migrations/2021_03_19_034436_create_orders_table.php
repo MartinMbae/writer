@@ -30,7 +30,7 @@ class CreateOrdersTable extends Migration
             $table->string('pending_notes');
             $table->string('random_id');
             $table->string('notes');
-            $table->enum("status",array(0,1,2,3,4)); //0 -> New Orders, //1 -> Awarded Orders, //2 -> Under Revision  //3->Completed Orders, //4->Rejected Orders, //5 -> Cancelled Orders, // 6 -> Paid Orders
+            $table->enum("status",array(0,1,2,3,4,5,6)); //0 -> New Orders, //1 -> Awarded Orders, //2 -> Under Revision  //3->Completed Orders, //4->Rejected Orders, //5 -> Cancelled Orders, // 6 -> Paid Orders
             $table->timestamps();
         });
     }

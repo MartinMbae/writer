@@ -15,18 +15,20 @@ class SourceController extends Controller
      */
     public function index()
     {
+        $title = "View Sources";
         $sources = Source::all();
-        return view('admin.sources', compact('sources'));
+        $orderController = new OrderController();
+        $counts = $orderController->getCounts();
+        return view('admin.sources', compact('sources','title','counts'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
-     */
+
     public function create()
     {
-        return view('admin.new_source');
+        $title = "Add a Source";
+        $orderController = new OrderController();
+        $counts = $orderController->getCounts();
+        return view('admin.create_source', compact('title','counts'));
     }
 
     /**
@@ -39,7 +41,10 @@ class SourceController extends Controller
     {
         Validator::make($request->all(), [
             'name' => ['required','string', 'max:50','unique:sources'],
-            'description' => ['required', 'string', 'max:255',],
+            'description' => ['required', 'string', 'max:100',],
+        ],[
+            'name.unique' => 'A source with a similar name already exists',
+
         ])->validate();
         $source = new Source();
         $source->name = $request->name;
