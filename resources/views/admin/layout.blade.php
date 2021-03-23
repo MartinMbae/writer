@@ -18,10 +18,14 @@
     <link rel="stylesheet" href="{{ asset('assets/concept/vendor/fonts/flag-icon-css/flag-icon.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
 
+    <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/imgs/logo.png')}}"/>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <link rel="stylesheet" href="{{ asset('assets/js/dropzone/dropzone.min.css') }}">
     <!-- jquery 3.3.1 -->
     <script src="{{ asset('assets/concept/vendor/jquery/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ asset('assets/concept/vendor/bootstrap/js/bootstrap.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/dropzone/dropzone.min.js') }}"></script>
     <title>{{ $title }}</title>
 </head>
@@ -36,7 +40,23 @@
 
 
     @include('admin.sidebar', ['counts'=>$counts])
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible" style="margin: 15px;">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>
+                {{ session()->get('success') }}
+            </strong>
+        </div>
+    @endif
 
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible" style="margin: 15px;">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>
+                {{ session()->get('error') }}
+            </strong>
+        </div>
+    @endif
     @yield('content')
 
 </div>
@@ -44,8 +64,6 @@
 <!-- end main wrapper  -->
 <!-- ============================================================== -->
 <!-- Optional JavaScript -->
-<!-- bootstap bundle js -->
-<script src="{{ asset('assets/concept/vendor/bootstrap/js/bootstrap.bundle.js') }}"></script>
 <!-- slimscroll js -->
 <script src="{{ asset('assets/concept/vendor/slimscroll/jquery.slimscroll.js') }}"></script>
 <!-- main js -->

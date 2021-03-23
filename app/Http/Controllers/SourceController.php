@@ -19,7 +19,7 @@ class SourceController extends Controller
         $sources = Source::all();
         $orderController = new OrderController();
         $counts = $orderController->getCounts();
-        return view('admin.sources', compact('sources','title','counts'));
+        return view('admin.sources', compact('sources', 'title', 'counts'));
     }
 
 
@@ -28,21 +28,21 @@ class SourceController extends Controller
         $title = "Add a Source";
         $orderController = new OrderController();
         $counts = $orderController->getCounts();
-        return view('admin.create_source', compact('title','counts'));
+        return view('admin.create_source', compact('title', 'counts'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      */
     public function store(Request $request)
     {
         Validator::make($request->all(), [
-            'name' => ['required','string', 'max:50','unique:sources'],
+            'name' => ['required', 'string', 'max:50', 'unique:sources'],
             'description' => ['required', 'string', 'max:100',],
-        ],[
+        ], [
             'name.unique' => 'A source with a similar name already exists',
 
         ])->validate();
@@ -50,13 +50,13 @@ class SourceController extends Controller
         $source->name = $request->name;
         $source->description = $request->description;
         $source->save();
-        return  redirect('sources');
+        return redirect('sources');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Source  $source
+     * @param \App\Models\Source $source
      * @return \Illuminate\Http\Response
      */
     public function show(Source $source)
@@ -64,37 +64,36 @@ class SourceController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Source  $source
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function edit(Source $source)
     {
-        //
+        $title = "Edit Source";
+        $orderController = new OrderController();
+        $counts = $orderController->getCounts();
+        return view('admin.edit_source', compact('title', 'counts','source'));
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Source  $source
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Source $source)
     {
-        //
+        Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:50', 'unique:sources,name,'.$source->id],
+            'description' => ['required', 'string', 'max:100',],
+        ], [
+            'name.unique' => 'A source with a similar name already exists',
+
+        ])->validate();
+        $source->name = $request->name;
+        $source->description = $request->description;
+        $source->save();
+        return redirect('sources');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Source  $source
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy(Source $source)
     {
-        //
+        Source::destroy($source->id);
+        return redirect('sources');
     }
 }

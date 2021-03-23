@@ -2,3 +2,13 @@
 .form-error {
     border: 2px solid #e74c3c;
 }
+table.table td a.edit {
+    color: #FFC107;
+}
+table.table td a.delete {
+    color: #E34724;
+}
+
+.ecommerce-widget .card .card-header a.edit{
+    color: #FFC107;
+}

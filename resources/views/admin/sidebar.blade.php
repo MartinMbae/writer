@@ -40,8 +40,8 @@
                            data-target="#submenu-sources" aria-controls="submenu-1"><i class="fa fa-fw fa-database"></i>Sources</a>
                         <div id="submenu-sources" class="submenu collapse" style="">
                             <ul class="nav flex-column">
-                                @include('admin.admin_components.sidebar_item', ['title'=>"View Sources", 'url'=>"sources", 'icon_class' => 'fa fa-fw fa-eye', 'show_badge'=> false,] )
                                 @include('admin.admin_components.sidebar_item', ['title'=>"Add a Source", 'url'=>"sources/create", 'icon_class' => 'fa fa-fw fa-plus', 'show_badge'=> false,] )
+                                @include('admin.admin_components.sidebar_item', ['title'=>"View Sources", 'url'=>"sources", 'icon_class' => 'fa fa-fw fa-eye', 'show_badge'=> false,] )
                             </ul>
                         </div>
                     </li>

@@ -34,8 +34,7 @@
                                                 <th class="border-0">Name of the source</th>
                                                 <th class="border-0">Description</th>
                                                 <th class="border-0">% of Orders</th>
-
-
+                                                <th class="border-0">Action</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -51,6 +50,21 @@
                                                         <td>{{ $source->name }}</td>
                                                         <td>{{ $source->description }}</td>
                                                         <td><span class="ml-1 text-success">5.86%</span></td>
+                                                        <td>
+                                                            <a class="edit" title="Edit" data-toggle="tooltip" href="{{ url("sources/$source->id/edit") }}" ><i class="material-icons">&#xE254;</i></a>
+                                                            <a class="delete" title="Delete" data-toggle="tooltip" href="#" onclick="event.preventDefault();
+                                                                       var check = confirm('Are you sure you want to delete this source?');
+                                                                       if (check === true) {
+                                                                       $('#delete_source').submit();
+                                                                       }"  ><i class="material-icons">&#xE872;</i></a>
+                                                            <form id="delete_source"
+                                                                  action="{{ url("sources/$source->id") }}"
+                                                                  method="POST" class="d-none">
+                                                                @csrf
+                                                                {{ method_field('DELETE') }}
+                                                            </form>
+                                                        </td>
+
                                                     </tr>
                                                 @endforeach
                                             @endif

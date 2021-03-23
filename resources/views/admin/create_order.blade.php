@@ -11,8 +11,8 @@
                             <div class="page-breadcrumb">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="{{ url('admin') }}"
-                                                                       class="breadcrumb-link">Dashboard</a></li>
+                                        <li class="breadcrumb-item"><a href="{{ url('admin') }}" class="breadcrumb-link">Dashboard</a></li>
+                                        <li class="breadcrumb-item"><a href="{{ url('orders') }}" class="breadcrumb-link">Orders</a></li>
                                         <li class="breadcrumb-item active" aria-current="page">Create a new Order</li>
                                     </ol>
                                 </nav>

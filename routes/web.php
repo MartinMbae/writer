@@ -32,6 +32,10 @@ Route::middleware(['auth:sanctum', 'verified','is_admin'])->group(function () {
     Route::resource('sources', '\App\Http\Controllers\SourceController');
     Route::resource('orders', '\App\Http\Controllers\OrderController');
     Route::post('order_files/{random}',  [OrderController::class, 'add_files']);
+    Route::post('assign',  [OrderController::class, 'assignToUser']);
+    Route::post('order/cancel/{order_id}',  [OrderController::class, 'cancel']);
+    Route::post('orders/edit_attachments/{order_id}',  [OrderController::class, 'edit_attachment']);
+    Route::get('test',  [OrderController::class, 'test']);
 
 });
 
