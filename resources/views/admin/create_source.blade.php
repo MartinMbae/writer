@@ -51,6 +51,5 @@
                 </div>
             </div>
         </div>
-@include('admin.footer')
     </div>
 @endsection

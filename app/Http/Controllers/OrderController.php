@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AssignedOrder;
+use App\Models\Attachment;
 use App\Models\Order;
 use App\Models\Source;
 use App\Models\User;
@@ -272,22 +273,16 @@ class OrderController extends Controller
     {
         $name = Source::where('id', $order->source_id)->first()->name;
         $order->source_name = $name;
-        $file_attachments = array_filter(Storage::disk('public')->files(),
-            function ($item) use ($order) {
-                return Str::startsWith($item, $order->random_id);
-            }
-        );
-        $attachments = array();
+        $attachments = Attachment::where("random_id", $order->random_id )->get();
+
         $image_extensions = ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'svg', 'svgz', 'cgm', 'djv', 'djvu', 'ico', 'ief','jpe', 'pbm', 'pgm', 'pnm', 'ppm', 'ras', 'rgb', 'tif', 'tiff', 'wbmp', 'xbm', 'xpm', 'xwd'];
-        foreach ($file_attachments as $file_attachment) {
-            $ext = pathinfo($file_attachment, PATHINFO_EXTENSION);
+        foreach ($attachments as $attachment) {
+            $ext = pathinfo($attachment->name, PATHINFO_EXTENSION);
             $isImage = in_array($ext, $image_extensions);
-            $single_attachments = array(
-                'is_image' => $isImage,
-                'name' => $file_attachment,
-                'trimmed_name' => str_replace("$order->random_id" . "_", "", $file_attachment),
-            );
-            $attachments[] = (object)($single_attachments);
+            $attachment->is_image = $isImage;
+            $attachment->trimmed_name = str_replace("$order->random_id" . "_", "", $attachment->name);
+            $attachment->is_image = $isImage;
+
         }
 
         $users = User::all();
@@ -490,12 +485,13 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         Order::destroy($order->id);
-        return Redirect::to('/orders')->with('success', 'Order has been deleted');
+        return Redirect::to('/orders')->with('success', 'Order has been deleted successfully');
     }
 
 
     public function add_files(Request $request, $random)
     {
+        $attachment = new Attachment();
         if ($request->hasFile('file')) {
             if ($request->file('file')->isValid()) {
                 $request->validate([
@@ -503,8 +499,12 @@ class OrderController extends Controller
                 ]);
                 $extension = $request->file->getClientOriginalExtension();
                 $filename = $random . '_' . pathinfo($request->file('file')->getClientOriginalName(), PATHINFO_FILENAME);
-                $request->file->storeAs('/public', $filename . "." . $extension);
+               $full_filename = $filename . "." . $extension;
+                $request->file->storeAs('/public',$full_filename );
                 $url = Storage::url($filename . "." . $extension);
+                $attachment->name = $full_filename;
+                $attachment->random_id = $random;
+                $attachment->save();
                 echo $url;
             }
         }
@@ -560,68 +560,29 @@ class OrderController extends Controller
         $order = Order::find($order_id);
         $name = Source::where('id', $order->source_id)->first()->name;
         $order->source_name = $name;
-        $file_attachments = array_filter(Storage::disk('public')->files(),
-            function ($item) use ($order) {
-                return Str::startsWith($item, $order->random_id);
-            }
-        );
-        $attachments = array();
+        $attachments = Attachment::where("random_id", $order->random_id )->get();
         $image_extensions = ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'svg', 'svgz', 'cgm', 'djv', 'djvu', 'ico', 'ief','jpe', 'pbm', 'pgm', 'pnm', 'ppm', 'ras', 'rgb', 'tif', 'tiff', 'wbmp', 'xbm', 'xpm', 'xwd'];
-        foreach ($file_attachments as $file_attachment) {
-            $ext = pathinfo($file_attachment, PATHINFO_EXTENSION);
+        foreach ($attachments as $attachment) {
+            $ext = pathinfo($attachment->name, PATHINFO_EXTENSION);
             $isImage = in_array($ext, $image_extensions);
-            $single_attachments = array(
-                'is_image' => $isImage,
-                'name' => $file_attachment,
-                'trimmed_name' => str_replace("$order->random_id" . "_", "", $file_attachment),
-            );
-            $attachments[] = (object)($single_attachments);
+            $attachment->is_image = $isImage;
+            $attachment->trimmed_name = str_replace("$order->random_id" . "_", "", $attachment->name);
+            $attachment->is_image = $isImage;
+
         }
 
-        $users = User::all();
-        $title = "View Order";
+        $title = "Edit attachments";
         $counts = $this->getCounts();
 
-
-        $assigned_user = null;
-        $assignmentDetails = null;
-        if ($order->status != 0){
-            $assigned_order = AssignedOrder::where("order_id",$order->id)->first();
-
-            if ($assigned_order !=  null) {
-                $assigned_user = User::find($assigned_order->user_id);
-
-                $assigned_status = null;
-                switch ($assigned_order->status) {
-                    case 0:
-                        $assigned_status = "Not Submitted";
-                        break;
-                    case 1:
-                        $assigned_status = "Under Revision";
-                        break;
-                    case 2:
-                        $assigned_status = "Completed";
-                        break;
-                    case 3:
-                        $assigned_status = "Rejected";
-                        break;
-                    case 4:
-                        $assigned_status = "Paid";
-                        break;
-                }
-                $assignmentDetails = (object)array(
-                    'date_of_assignment' => $assigned_order->created_at->timezone("Africa/Nairobi")->format('dS F Y \\a\\t g:i a'),
-                    'status' => $assigned_status,
-                );
-            }
-        }
-        return view('admin.edit_attachments', compact('order', 'users', 'attachments', 'title', 'counts', 'assigned_user', 'assignmentDetails'));
+        return view('admin.edit_attachments', compact('order',  'attachments', 'title', 'counts'));
 
     }
-    public function test(){
 
-//        return Redirect::to('/admin')->with('success', 'SOmething added successfuly');
-        return Redirect::to('/admin')->with('error', 'SOmething bad happened');
+    public function delete_attachment($attachment_id){
+        $attachment = Attachment::find($attachment_id);
+        Attachment::destroy($attachment_id);
+        unlink(storage_path('app/public/'.$attachment->name));
+        return Redirect::back()->with('success', 'Attachment has been deleted successfully');
     }
 
 }

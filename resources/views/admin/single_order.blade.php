@@ -31,7 +31,9 @@
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
                                         <h3 class="mr-auto">Order Details</h3>
-                                            <a class="edit" title="Edit" data-toggle="tooltip" href="{{ url("orders/$order->id/edit") }}" ><i class="material-icons">&#xE254;</i></a>
+                                        <a class="edit" title="Edit" data-toggle="tooltip"
+                                           href="{{ url("orders/$order->id/edit") }}"><i
+                                                class="material-icons">&#xE254;</i></a>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -68,15 +70,23 @@
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
                                         <h3 class="mr-auto">Attachments</h3>
-                                        <a class="edit" title="Edit" data-toggle="tooltip" href="{{ url("orders/edit_attachments/$order->id") }}" ><i class="material-icons">&#xE254;</i></a>
+                                        <a class="edit" title="Edit" data-toggle="tooltip"
+                                           href="{{ url("orders/edit_attachments/$order->id") }}"><i
+                                                class="material-icons">&#xE254;</i></a>
                                     </div>
                                 </div>
                                 <div class="card-body">
                                     <p class="lead">Below are files attached to this order. </p>
                                     <div class="row">
-                                        @foreach($attachments as $attachment)
-                                            @include('admin.admin_components.order_attachments', ['attachment'=>$attachment])
-                                        @endforeach
+
+                                        @if(sizeof($attachments) > 0)
+                                            @foreach($attachments as $attachment)
+                                                @include('admin.admin_components.order_attachments', ['attachment'=>$attachment, 'edit'=> false])
+                                            @endforeach
+                                        @else
+                                            <span class="text-danger"
+                                                  style="margin-left: 20px">No attachment found</span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

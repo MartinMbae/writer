@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Source;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 class SourceController extends Controller
@@ -50,7 +51,7 @@ class SourceController extends Controller
         $source->name = $request->name;
         $source->description = $request->description;
         $source->save();
-        return redirect('sources');
+        return redirect('sources')->with('success', 'Source has been created successfully.');
     }
 
     /**
@@ -87,13 +88,13 @@ class SourceController extends Controller
         $source->name = $request->name;
         $source->description = $request->description;
         $source->save();
-        return redirect('sources');
+        return redirect('sources')->with('success', 'Source has been updated successfully.');
     }
 
 
     public function destroy(Source $source)
     {
         Source::destroy($source->id);
-        return redirect('sources');
+        return redirect('sources')->with('success', 'Source has been deleted successfully.');
     }
 }
