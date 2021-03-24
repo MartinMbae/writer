@@ -521,6 +521,7 @@ class OrderController extends Controller
             'rejected' => Order::where('status', '4')->count(),
             'cancelled' => Order::where('status', '5')->count(),
             'paid' => Order::where('status', '6')->count(),
+            'users' => User::count(),
         );
         return (object)($counts);
 

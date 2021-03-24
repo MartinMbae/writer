@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SourceController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\WriterController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,8 +32,13 @@ Route::middleware(['auth:sanctum', 'verified','is_admin'])->group(function () {
     Route::get('admin/orders/{category}',  [OrderController::class, 'index']);
     Route::resource('sources', '\App\Http\Controllers\SourceController');
     Route::resource('orders', '\App\Http\Controllers\OrderController');
+    Route::resource('users', '\App\Http\Controllers\UserController');
     Route::post('order_files/{random}',  [OrderController::class, 'add_files']);
     Route::post('assign',  [OrderController::class, 'assignToUser']);
+    Route::post('user/upgrade/admin/{user_id}',  [UserController::class, 'upgradeToAdmin']);
+    Route::post('user/downgrade/writer/{user_id}',  [UserController::class, 'downgradeToWriter']);
+    Route::post('user/deactivate/{user_id}',  [UserController::class, 'deactivate']);
+    Route::post('user/activate/{user_id}',  [UserController::class, 'activate']);
     Route::post('order/cancel/{order_id}',  [OrderController::class, 'cancel']);
     Route::get('orders/edit_attachments/{order_id}',  [OrderController::class, 'edit_attachment']);
     Route::delete('orders/delete/attachment/{attachment_id}',  [OrderController::class, 'delete_attachment']);

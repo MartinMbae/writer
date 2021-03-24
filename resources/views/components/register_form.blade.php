@@ -12,6 +12,10 @@
                 {!! $errors->register->first('email', '<p class="text-danger">:message</p>') !!}
             </div>
             <div class="form-group">
+                <input type="text" class="form-control {{($errors->register->first('phone') ? "form-error" : "")}}" name="phone" placeholder="Phone number" value="{{ old('phone') }}"/>
+                {!! $errors->register->first('phone', '<p class="text-danger">:message</p>') !!}
+            </div>
+            <div class="form-group">
                 <input type="password" class="form-control  {{($errors->register->first('password') ? "form-error" : "")}}" name="password" placeholder="Password" value=""/>
                 {!! $errors->register->first('password', '<p class="text-danger">:message</p>') !!}
             </div>

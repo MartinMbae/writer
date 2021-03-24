@@ -45,6 +45,8 @@
                             </ul>
                         </div>
                     </li>
+                    @include('admin.admin_components.sidebar_item', ['title'=>"Users", 'url'=>"users", 'icon_class' => 'fa fa-fw fa-users', 'show_badge'=> true, 'badge_value'=>"$counts->users", 'badge_class'=>'badge-primary'] )
+
                     <li class="nav-divider">
                         Financials
                     </li>

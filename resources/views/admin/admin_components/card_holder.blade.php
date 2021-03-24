@@ -5,11 +5,11 @@
             <div class="metric-value d-inline-block">
                 <h1 class="mb-1">{{ $count }}</h1>
             </div>
-            <a href="{{ url("$url") }}">
-                <div class="metric-label d-inline-block float-right text-primary font-weight-bold">
-                    <span class="ml-1">View</span>
-                </div>
-            </a>
+{{--            <a href="{{ url("$url") }}">--}}
+{{--                <div class="metric-label d-inline-block float-right text-primary font-weight-bold">--}}
+{{--                    <span class="ml-1">View</span>--}}
+{{--                </div>--}}
+{{--            </a>--}}
         </div>
     </div>
 </div>
